@@ -232,8 +232,9 @@ export function stepPlayer(player, input, dt, world, aim) {
   const yaw = player.camYaw;
   const fx = Math.sin(yaw);
   const fz = Math.cos(yaw);
-  const rx = Math.cos(yaw);
-  const rz = -Math.sin(yaw);
+  // Screen-right is forward × up because this camera looks along +forward.
+  const rx = -Math.cos(yaw);
+  const rz = Math.sin(yaw);
   const desiredX = (fx * iz + rx * ix) * speed;
   const desiredZ = (fz * iz + rz * ix) * speed;
   const blend = 1 - Math.exp(-6.2 * dt);

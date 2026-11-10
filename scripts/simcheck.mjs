@@ -45,9 +45,41 @@ const still = {
 };
 
 const walker = makePlayer('p1', 'Sable', world.spawns.p1);
-const west = { ...still, moveX: -1, camYaw: 0 };
+const westStart = walker.pos.x;
+// Yaw 0 looks along +Z. Screen-right is forward × up, which is west.
+const west = { ...still, moveX: 1, camYaw: 0 };
 for (let i = 0; i < 200; i++) stepPlayer(walker, west, 1 / 60, world, null);
+if (!(walker.pos.x < westStart - 1)) {
+  throw new Error(`screen-right at yaw 0 should walk west, x=${walker.pos.x.toFixed(2)}`);
+}
 if (walker.pos.x < -20.2) throw new Error(`walked through the west wall at x=${walker.pos.x.toFixed(2)}`);
+
+// Open ground south of the gate, so a short strafe or step does not hit a wall.
+const open = { x: 0, y: 0, z: 28 };
+for (const yaw of [0, Math.PI / 2, Math.PI, -Math.PI / 2, 0.9]) {
+  const fx = Math.sin(yaw);
+  const fz = Math.cos(yaw);
+  const rx = -Math.cos(yaw);
+  const rz = Math.sin(yaw);
+  const right = makePlayer('p1', 'Sable', { ...open, yaw });
+  for (let i = 0; i < 50; i++) stepPlayer(right, { ...still, moveX: 1, camYaw: yaw }, 1 / 60, world, null);
+  const rdx = right.pos.x - open.x;
+  const rdz = right.pos.z - open.z;
+  const rAlong = rdx * rx + rdz * rz;
+  const rCross = rdx * fx + rdz * fz;
+  if (rAlong < 0.5 || Math.abs(rCross) > 0.2) {
+    throw new Error(`screen-right at yaw ${yaw.toFixed(2)} went (${rdx.toFixed(2)}, ${rdz.toFixed(2)})`);
+  }
+  const ahead = makePlayer('p1', 'Sable', { ...open, yaw });
+  for (let i = 0; i < 50; i++) stepPlayer(ahead, { ...still, moveZ: 1, camYaw: yaw }, 1 / 60, world, null);
+  const fdx = ahead.pos.x - open.x;
+  const fdz = ahead.pos.z - open.z;
+  const fAlong = fdx * fx + fdz * fz;
+  const fCross = fdx * rx + fdz * rz;
+  if (fAlong < 0.5 || Math.abs(fCross) > 0.2) {
+    throw new Error(`forward at yaw ${yaw.toFixed(2)} went (${fdx.toFixed(2)}, ${fdz.toFixed(2)})`);
+  }
+}
 
 const grappler = makePlayer('p1', 'Sable', world.spawns.p1);
 const eye = new THREE.Vector3(grappler.pos.x, grappler.pos.y + 1.45, grappler.pos.z);
