@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Shinzu</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+  <canvas id="view"></canvas>
+
+  <div id="menu">
+    <section class="card">
+      <p class="kicker">Orchard Gate</p>
+      <h1>Shinzu</h1>
+      <p class="lede">Two shinobi. One envoy. Cross the roofs, stay unseen, and leave together by the south ford.</p>
+      <div class="row">
+        <button id="btn-host" type="button">Host mission</button>
+      </div>
+      <form class="join" onsubmit="return false;">
+        <label for="code">Room code</label>
+        <div class="row">
+          <input id="code" maxlength="4" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="ABCD">
+          <button id="btn-join" type="button">Join</button>
+        </div>
+      </form>
+      <p id="menu-error" class="error"></p>
+      <p id="menu-status" class="status">Connecting…</p>
+      <p class="fine">Walk is the pace. Crouch is quieter. The glowing hooks are the way onto the roofs. The host runs the guards.</p>
+    </section>
+  </div>
+
+  <div id="hud" class="hidden">
+    <header class="top">
+      <div class="objective-block">
+        <p id="objective">Silence Envoy Voss</p>
+        <p id="objective-detail"></p>
+        <div class="meter-row">
+          <span id="alert-label" data-level="unseen">Unseen</span>
+          <div class="meter"><div id="meter-fill"></div></div>
+        </div>
+      </div>
+      <p id="room-pill"></p>
+    </header>
+    <div id="reticle" class="hidden"></div>
+    <p id="prompt"></p>
+    <p id="toast"></p>
+    <p id="keyhint">WASD move · mouse look · C crouch · Space rise · F grapple · E takedown</p>
+    <div id="win">
+      <p class="kicker">Orchard Gate</p>
+      <h2>The ford is clear</h2>
+      <p>Envoy Voss is silent, and the shinobi are out.</p>
+    </div>
+    <p id="debug"></p>
+  </div>
+
+  <div id="touch">
+    <div id="stick" aria-label="Move">
+      <div id="knob"></div>
+    </div>
+    <div class="pad">
+      <button id="btn-crouch" type="button">Crouch</button>
+      <button id="btn-hook" type="button">Hook</button>
+      <button id="btn-down" type="button">Down</button>
+      <button id="btn-rise" type="button">Rise</button>
+    </div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "/vendor/three/build/three.module.js",
+      "three/addons/": "/vendor/three/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="/js/main.js"></script>
+</body>
+</html>

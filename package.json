@@ -1,0 +1,15 @@
+{
+  "name": "shinzu",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Shinzu — a two-player browser stealth prototype in Orchard Gate.",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node scripts/simcheck.mjs"
+  },
+  "dependencies": {
+    "three": "^0.170.0",
+    "ws": "^8.18.0"
+  }
+}
